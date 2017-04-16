@@ -127,34 +127,34 @@ function draw() {
     splitblobs[0].attack();
     //attackCounter = 0;
   }
+  var valX = 0;
+  var valY = 0;
+  var speed = 3;
+
+  if (keyIsDown(87))
+  {
+    valY -= 1;
+  }
+  if (keyIsDown(83))
+  {
+    valY += 1;
+  }
+  if (keyIsDown(65))
+  {
+    valX -= 1;
+  }
+  if (keyIsDown(68))
+  {
+    valX += 1;
+  }
+
+  splitblobs[0].vel = createVector( valX * speed , valY * speed);
 }
 function keyRelease()
 {
   splitblobs[0].vel = createVector(0,0);
 }
 function keyPressed() {
-  var valX = 0;
-  var valY = 0;
-  var speed = 3;
-
-  if (keyCode == 87)
-  {
-    valY -= 1;
-  }
-  if (keyCode == 83)
-  {
-    valY += 1;
-  }
-  if (keyCode == 65)
-  {
-    valX -= 1;
-  }
-  if (keyCode == 68)
-  {
-    valX += 1;
-  }
-
-  splitblobs[0].vel = createVector( valX * speed , valY * speed);
 
   if (keyCode == ENTER)
   {

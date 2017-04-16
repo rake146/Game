@@ -148,6 +148,10 @@ function draw() {
     if (dist(centerOfCharX + valX * speed, centerOfCharY + valY * speed, trees[i].pos.x, trees[i].pos.y) < trees[i].r)
       ableToMove = false;
   }
+  for (var i = 0; i < rocks.length; i++) {
+    if (dist(centerOfCharX + valX * speed, centerOfCharY + valY * speed, rocks[i].pos.x + rocks[i].r/2, rocks[i].pos.y + rocks[i].r/2) < rocks[i].r/2)
+      ableToMove = false;
+  }
 
   if (ableToMove)
   {

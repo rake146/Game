@@ -90,6 +90,7 @@ function draw() {
   for (var i = 0; i < trees.length; i++) {
     trees[i].show();
     rocks[i].show();
+
   }
 
   spawnEnemies();
@@ -140,8 +141,19 @@ function draw() {
     valX += 1;
   }
 
-  if (dist(splitblobs[0].pos.x + valX*speed, splitblobs[0].pos.y + valY*speed, trees[i].pos.x, trees[i].pos.y) < trees[i].r)
-    splitblobs[0].vel = createVector( valX * speed , valY * speed);
+  for (var i = 0; i < trees.length; i++) {
+    if (dist(splitblobs[0].pos.x + valX * speed, splitblobs[0].pos.y +  valY * speed, trees[i].pos.x, trees[i].pos.y) > trees[i].r)
+    {
+      splitblobs[0].vel = createVector( valX * speed , valY * speed);
+    }
+    else {
+      var bounce = createVector(-splitblobs[0].vel.x, -splitblobs[0].vel.y);
+      bounce.setMag(1);
+      splitblobs[0].vel = bounce;
+    }
+  }
+
+
 }
 function keyRelease()
 {

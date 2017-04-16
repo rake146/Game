@@ -142,20 +142,22 @@ function draw() {
   }
 
   var ableToMove = true;
+  var centerOfCharX = splitblobs[0].pos.x + splitblobs[0].r/2;
+  var centerOfCharY = splitblobs[0].pos.y + splitblobs[0].r*0.3;
   for (var i = 0; i < trees.length; i++) {
-    if (dist(splitblobs[0].pos.x + valX * speed, splitblobs[0].pos.y +  valY * speed, trees[i].pos.x, trees[i].pos.y) < trees[i].r)
+    if (dist(centerOfCharX + valX * speed, centerOfCharY + valY * speed, trees[i].pos.x, trees[i].pos.y) < trees[i].r)
       ableToMove = false;
   }
-	
-if (ableToMove)
-    {
-      splitblobs[0].vel = createVector( valX * speed , valY * speed);
-    }
-    else {
-      var bounce = createVector(-splitblobs[0].vel.x, -splitblobs[0].vel.y);
-      bounce.setMag(1);
-      splitblobs[0].vel = bounce;
-    }
+
+  if (ableToMove)
+  {
+    splitblobs[0].vel = createVector( valX * speed , valY * speed);
+  }
+  else {
+    var bounce = createVector(-splitblobs[0].vel.x, -splitblobs[0].vel.y);
+    bounce.setMag(1);
+    splitblobs[0].vel = bounce;
+  }
 
 
 }

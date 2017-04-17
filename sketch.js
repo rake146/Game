@@ -55,11 +55,8 @@ function setup() {
 }
 
 function draw() {
-  if (timeTilInvasion > 5)
-    colourMultiplierSecond = 0;
-  else {
-    colourMultiplierSecond = 0;
-  }
+
+
   if (timeTilInvasion < 15)
     opacityMultiplier = 6;
   else {
@@ -74,7 +71,7 @@ function draw() {
     millitimer = 60;
   }
 
-  background(180-(colourMultiplier*colourMultiplierSecond), 213-(colourMultiplier*colourMultiplierSecond), 83-(colourMultiplier*colourMultiplierSecond));
+  background(108-(colourMultiplier*colourMultiplierSecond), 130-(colourMultiplier*colourMultiplierSecond), 85-(colourMultiplier*colourMultiplierSecond));
   strokeWeight(0);
   var mouseXpos = mouseX-width/2;
   var mouseYpos = mouseY-height/2;
@@ -85,15 +82,36 @@ function draw() {
   translate(-splitblobs[0].pos.x, -splitblobs[0].pos.y);
 
   push();
-  fill(255-(colourMultiplier*colourMultiplierSecond), 213-(colourMultiplier*colourMultiplierSecond), 83-(colourMultiplier*colourMultiplierSecond));
+  fill(118-(colourMultiplier*colourMultiplierSecond), 143-(colourMultiplier*colourMultiplierSecond), 90-(colourMultiplier*colourMultiplierSecond));
+  strokeWeight(2);
+  stroke(102,123,81);
+  for (var i = -2000; i < 2000; i+=40) {
+    //stroke(112-(colourMultiplier*colourMultiplierSecond), 135-(colourMultiplier*colourMultiplierSecond), 86-(colourMultiplier*colourMultiplierSecond));
+    line(-2000, i, 2000, i);
+  }
+  for (var i = -2000; i < 2000; i+=40) {
+    line(i, -2000, i, 2000);
+  }
+
   rect(-1000, -1000, 2000, 2000);
   pop();
-  strokeWeight(1);
+  strokeWeight(2);
+  stroke(112,135,86);
   for (var i = -1000; i < 1000; i+=40) {
-    stroke(168-(colourMultiplier*colourMultiplierSecond), 200-(colourMultiplier*colourMultiplierSecond), 73-(colourMultiplier*colourMultiplierSecond));
+    if (i < -1000 || i > 1000)
+      stroke(0,0,0);
+    else {
+        stroke(112,135,86);
+    }
+    //stroke(112-(colourMultiplier*colourMultiplierSecond), 135-(colourMultiplier*colourMultiplierSecond), 86-(colourMultiplier*colourMultiplierSecond));
     line(-1000, i, 1000, i);
   }
   for (var i = -1000; i < 1000; i+=40) {
+    if (i < -1000 || i > 1000)
+      stroke(0,0,0);
+    else {
+      stroke(112,135,86);
+    }
     line(i, -1000, i, 1000);
   }
 
@@ -137,9 +155,8 @@ function draw() {
   }
   pop();
   for (var i = 0; i < trees.length; i++) {
-    trees[i].show();
     rocks[i].show();
-
+    trees[i].show();
   }
 
   spawnEnemies();
@@ -250,12 +267,8 @@ function draw() {
     splitblobs[0].attack();
     //attackCounter = 0;
   }
-  pop();
-
-  push();
-  fill(0, 0, 0, 0+(colourMultiplier * opacityMultiplier));
-  rect(-2000, -2000, 4000, 4000);
-  pop();
+  fill(0,0,0,0+(colourMultiplier * opacityMultiplier));
+  rect(-2000,-2000,4000, 4000);
 }
 function keyRelease()
 {

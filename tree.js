@@ -20,8 +20,8 @@ function Tree(x, y, r) {
   }
   this.show = function() {
 
-    fill(155-(colourMultiplier*colourMultiplierSecond), 184-(colourMultiplier*colourMultiplierSecond), 74-(colourMultiplier*colourMultiplierSecond));
-    stroke(87-(colourMultiplier*colourMultiplierSecond), 96-(colourMultiplier*colourMultiplierSecond), 53-(colourMultiplier*colourMultiplierSecond));
+    fill(103-(colourMultiplier*colourMultiplierSecond), 104-(colourMultiplier*colourMultiplierSecond), 81-(colourMultiplier*colourMultiplierSecond));
+    stroke(53-(colourMultiplier*colourMultiplierSecond), 53-(colourMultiplier*colourMultiplierSecond), 77-(colourMultiplier*colourMultiplierSecond));
     strokeWeight(3);
     beginShape();
     for (i = 0; i < 5; i++) {
@@ -29,7 +29,7 @@ function Tree(x, y, r) {
     }
     endShape(CLOSE);
 
-    fill(176-(colourMultiplier*colourMultiplierSecond), 212-(colourMultiplier*colourMultiplierSecond), 80-(colourMultiplier*colourMultiplierSecond));
+    fill(117-(colourMultiplier*colourMultiplierSecond), 143-(colourMultiplier*colourMultiplierSecond), 88-(colourMultiplier*colourMultiplierSecond));
     strokeWeight(0);
     beginShape();
     for (i = 0; i < 5; i++) {

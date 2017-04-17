@@ -10,7 +10,7 @@ function Bullet(x, y, r, mouseXpos, mouseYpos) {
     var extrapY = (2000/mouseY-height/2);
     var newvel = createVector(((mouseXpos)*50 - this.pos.x), ((mouseYpos)*50 - this.pos.y));
 
-    newvel.setMag(6);
+    newvel.setMag(random(6,12));
     //this.vel.lerp(newvel, 1);
     this.pos.add(newvel);
     //console.log(playerposy);

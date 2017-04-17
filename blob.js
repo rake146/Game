@@ -28,13 +28,13 @@ function Blob(x, y, r) {
     //this.playAnimation();
     var mouseXpos = mouseX-width/2;
     var mouseYpos = mouseY-height/2;
-    var playerX = this.pos.x - this.r/2;
-    var playerY = this.pos.y - this.r*0.3;
+    var playerX = this.pos.x + this.r/2;
+    var playerY = this.pos.y + this.r*0.3;
     if (attackCounter >= attackSpeed)
     {
       //translate the object back to orig coords
 
-      bullets[bullets.length] = new Bullet(playerX + this.r*cos(angle), playerY + this.r*sin(angle), this.r/6, mouseX-width/2, mouseY-height/2);
+      bullets[bullets.length] = new Bullet(playerX + this.r*cos(angle - PI/2), playerY + this.r*sin(angle - PI/2), this.r/6, mouseX-width/2, mouseY-height/2);
       //console.log(angle);
       attackspeed = (random(4,20));
       attackCounter = 0;

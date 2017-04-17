@@ -62,6 +62,10 @@ function draw() {
   for (var i = -1000; i < 1000; i+=40) {
     line(i, -1000, i, 1000);
   }
+
+  fill(0, 0, 0);
+  text("word", splitblobs[0].pos.x - windowWidth/2 + 30, splitblobs[0].pos.y - windowHeight/2 + 30);
+  fill(0, 0, 0);
   push();
   //translate to get center pos to center of character
   translate((splitblobs[0].pos.x + splitblobs[0].r/2), (splitblobs[0].pos.y + splitblobs[0].r*0.3));
@@ -164,7 +168,6 @@ function draw() {
     splitblobs[0].vel = bounce;
   }
 
-  text("word", splitblobs[0].pos.x - windowWidth/2 + 30, splitblobs[0].pos.y - windowHeight/2 + 30);
 }
 function keyRelease()
 {

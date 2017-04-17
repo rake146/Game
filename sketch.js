@@ -14,10 +14,16 @@ var attackCounter = 0;
 var attackSpeed = 20;
 var wave = 0;
 var rangedEnemy = [];
-
+var timeTilInvasion = 60;
+var millitimer = 60;
+var timerInitiated = false;
+var colourMultiplier = 30-timeTilInvasion;
+var colourMultiplierSecond = 0;
+var opacityMultiplier = 0;
+var backgroundOverlay;
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
+  var colourMultiplier = 30-timeTilInvasion;
   for (var i = 0; i < 5; i++){
       var x = random(-1000, 1000);
       var y = random(-1000, 1000);
@@ -37,7 +43,8 @@ function setup() {
     }
     while(dist(x + 32, y + 64*0.3, trees[i].pos.x, trees[i].pos.y) < trees[i].r*2 && dist(x + 32, y + 64*0.3, rocks[i].pos.x, rocks[i].pos.y) < rocks[i].r);
   }
-  newWave();
+
+  //newWave();
 
   for (var i = 0; i < 5; i++)
   {
@@ -48,7 +55,26 @@ function setup() {
 }
 
 function draw() {
-  background(180, 213, 83);
+  if (timeTilInvasion > 5)
+    colourMultiplierSecond = 0;
+  else {
+    colourMultiplierSecond = 0;
+  }
+  if (timeTilInvasion < 15)
+    opacityMultiplier = 6;
+  else {
+    opacityMultiplier = 0;
+  }
+  colourMultiplier = 30-timeTilInvasion;
+  if (millitimer > 0)
+    millitimer--;
+  else {
+    if (timeTilInvasion > 0)
+      timeTilInvasion--;
+    millitimer = 60;
+  }
+
+  background(180-(colourMultiplier*colourMultiplierSecond), 213-(colourMultiplier*colourMultiplierSecond), 83-(colourMultiplier*colourMultiplierSecond));
   strokeWeight(0);
   var mouseXpos = mouseX-width/2;
   var mouseYpos = mouseY-height/2;
@@ -59,12 +85,12 @@ function draw() {
   translate(-splitblobs[0].pos.x, -splitblobs[0].pos.y);
 
   push();
-  fill(255, 213, 83);
+  fill(255-(colourMultiplier*colourMultiplierSecond), 213-(colourMultiplier*colourMultiplierSecond), 83-(colourMultiplier*colourMultiplierSecond));
   rect(-1000, -1000, 2000, 2000);
   pop();
   strokeWeight(1);
   for (var i = -1000; i < 1000; i+=40) {
-    stroke(168, 200, 73);
+    stroke(168-(colourMultiplier*colourMultiplierSecond), 200-(colourMultiplier*colourMultiplierSecond), 73-(colourMultiplier*colourMultiplierSecond));
     line(-1000, i, 1000, i);
   }
   for (var i = -1000; i < 1000; i+=40) {
@@ -124,9 +150,22 @@ function draw() {
   }
   if (enemy.length == 0)
   {
-    waveMultiplier += 0.1;
-    sizeMultiplier += 0.1;
-    newWave();
+
+    if (timerInitiated == false)
+    {
+      timeTilInvasion = 30;
+      timerInitiated = true;
+    }
+    if (timeTilInvasion == 0)
+    {
+      waveMultiplier += 0.1;
+      sizeMultiplier += 0.1;
+      timerInitiated = false;
+      newWave();
+    }
+    for (var i = 0; i < rangedEnemy.length; i++) {
+      rangedEnemy.splice(i, 1);
+    }
   }
   if (attackCounter < attackSpeed)
   {
@@ -186,6 +225,7 @@ function draw() {
   strokeWeight(0);
   textAlign(LEFT);
   text("Wave " + wave, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 30);
+  text("Timer " + timeTilInvasion, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 60);
   strokeWeight(1);
   fill(0, 0, 0);
   push();
@@ -212,7 +252,10 @@ function draw() {
   }
   pop();
 
-
+  push();
+  fill(0, 0, 0, 0+(colourMultiplier * opacityMultiplier));
+  rect(-2000, -2000, 4000, 4000);
+  pop();
 }
 function keyRelease()
 {

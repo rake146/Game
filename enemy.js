@@ -34,11 +34,13 @@ function Enemy(x, y, r) {
   this.show = function() {
     //hp bars
 
-    fill(155, 184, 74);
-    stroke(87, 96, 53);
+    fill(155-(colourMultiplier*colourMultiplierSecond), 184-(colourMultiplier*colourMultiplierSecond), 74-(colourMultiplier*colourMultiplierSecond));
+    stroke(87-(colourMultiplier*colourMultiplierSecond), 96-(colourMultiplier*colourMultiplierSecond), 53-(colourMultiplier*colourMultiplierSecond));
     strokeWeight(3);
     textSize(16);
     ellipse(this.pos.x, this.pos.y, this.r, this.r);
+    fill(155-(colourMultiplier), 184-(colourMultiplier), 74-(colourMultiplier));
+    stroke(87-(colourMultiplier), 96-(colourMultiplier), 53-(colourMultiplier));
     textAlign(CENTER);
     text(round(this.r), this.pos.x, this.pos.y);
     stroke(0);

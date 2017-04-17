@@ -19,12 +19,12 @@ function Rock(x, y, r) {
 
   }
   this.show = function() {
-    stroke(110, 110, 110);
+    stroke(110-(colourMultiplier*colourMultiplierSecond), 110-(colourMultiplier*colourMultiplierSecond), 110-(colourMultiplier*colourMultiplierSecond));
     strokeWeight(3);
-    fill(193, 197, 199);
+    fill(193-(colourMultiplier*colourMultiplierSecond), 197-(colourMultiplier*colourMultiplierSecond), 199-(colourMultiplier*colourMultiplierSecond));
     rect(this.pos.x, this.pos.y, this.r, this.r, 20);
     strokeWeight(0);
-    fill(213, 227, 232);
+    fill(213-(colourMultiplier*colourMultiplierSecond), 227-(colourMultiplier*colourMultiplierSecond), 232-(colourMultiplier*colourMultiplierSecond));
     rect(this.pos.x + this.r*0.15, this.pos.y + this.r*0.15, this.r*0.75, this.r*0.75, 20);
   }
 }

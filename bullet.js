@@ -34,8 +34,8 @@ function Bullet(x, y, r, mouseXpos, mouseYpos) {
   }
   this.show = function() {
 
-    fill(155, 184, 74);
-    stroke(87, 96, 53);
+    fill(155-(colourMultiplier*colourMultiplierSecond), 184-(colourMultiplier*colourMultiplierSecond), 74-(colourMultiplier*colourMultiplierSecond));
+    stroke(87-(colourMultiplier*colourMultiplierSecond), 96-(colourMultiplier*colourMultiplierSecond), 53-(colourMultiplier*colourMultiplierSecond));
     strokeWeight(3);
     ellipse(this.pos.x, this.pos.y, this.r, this.r)
   }

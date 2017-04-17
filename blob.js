@@ -38,7 +38,7 @@ function Blob(x, y, r) {
   }
   this.show = function() {
     //hp bars
-    fill(0, 255, 0);
+    fill(0, 255-(colourMultiplier*colourMultiplierSecond), 0);
     noStroke();
     // Get fraction 0->1 and multiply it by width of bar
     var drawWidth = (splitblobs[0].health / splitblobs[0].maxhp) * rectWidth;
@@ -47,21 +47,21 @@ function Blob(x, y, r) {
     stroke(0);
     noFill();
     rect(splitblobs[0].pos.x, splitblobs[0].pos.y + 55, rectWidth, 5, 5);
-    fill(211, 155, 232);
+    fill(211-(colourMultiplier*colourMultiplierSecond), 155-(colourMultiplier*colourMultiplierSecond), 232-(colourMultiplier*colourMultiplierSecond));
     strokeWeight(3);
-    stroke(85, 67, 91);
+    stroke(85-(colourMultiplier*colourMultiplierSecond), 67-(colourMultiplier*colourMultiplierSecond), 91-(colourMultiplier*colourMultiplierSecond));
     rect(this.pos.x + this.r/2 - this.r/8, this.pos.y + this.r*0.3 - this.r, this.r/4, this.r);
-    fill(211, 155, 232);
+    fill(211-(colourMultiplier*colourMultiplierSecond), 155-(colourMultiplier*colourMultiplierSecond), 232-(colourMultiplier*colourMultiplierSecond));
     strokeWeight(3);
-    stroke(85, 67, 91);
+    stroke(85-(colourMultiplier*colourMultiplierSecond), 67-(colourMultiplier*colourMultiplierSecond), 91-(colourMultiplier*colourMultiplierSecond));
     rect(this.pos.x, this.pos.y, this.r, this.r*0.6, 10);
-    fill(145, 53, 14);
+    fill(145-(colourMultiplier*colourMultiplierSecond), 53-(colourMultiplier*colourMultiplierSecond), 14-(colourMultiplier*colourMultiplierSecond));
     strokeWeight(1);
 
     //rect(this.pos.x - this.r/2, this.pos.y - this.r*0.4, this.r*0.6, this.r/6);
 
     strokeWeight(3);
-    fill(211, 155, 232);
+    fill(211-(colourMultiplier*colourMultiplierSecond), 155-(colourMultiplier*colourMultiplierSecond), 232-(colourMultiplier*colourMultiplierSecond));
     ellipse(this.pos.x - this.r/6, this.pos.y + this.r/4, this.r/4, this.r/4);
     ellipse(this.pos.x + this.r/6 + this.r, this.pos.y + this.r/4, this.r/4, this.r/4);
     fill(0);

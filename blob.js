@@ -21,8 +21,8 @@ function Blob(x, y, r) {
   }
 
   this.constrain = function(){
-      this.pos.x = constrain(this.pos.x, -1000+this.r, 1000-this.r);
-      this.pos.y = constrain(this.pos.y, -1000+this.r, 1000-this.r);
+      this.pos.x = constrain(this.pos.x, -1000-this.r/2, 1000-this.r/2);
+      this.pos.y = constrain(this.pos.y, -1000-this.r*0.3, 1000-this.r*0.3);
   }
   this.attack = function(){
     //this.playAnimation();

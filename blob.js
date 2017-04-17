@@ -24,15 +24,18 @@ function Blob(x, y, r) {
       this.pos.x = constrain(this.pos.x, -1000-this.r/2, 1000-this.r/2);
       this.pos.y = constrain(this.pos.y, -1000-this.r*0.3, 1000-this.r*0.3);
   }
-  this.attack = function(){
+  this.attack = function(angle){
     //this.playAnimation();
     var mouseXpos = mouseX-width/2;
     var mouseYpos = mouseY-height/2;
+    var playerX = this.pos.x - this.r/2;
+    var playerY = this.pos.y - this.r*0.3;
     if (attackCounter >= attackSpeed)
     {
-
       //translate the object back to orig coords
-      bullets[bullets.length] = new Bullet(this.pos.x + this.r/2, this.pos.y + this.r*0.3 - 100, this.r/6, mouseX-width/2, mouseY-height/2);
+
+      bullets[bullets.length] = new Bullet(playerX + this.r*cos(angle), playerY + this.r*sin(angle), this.r/6, mouseX-width/2, mouseY-height/2);
+      //console.log(angle);
       attackspeed = (random(4,20));
       attackCounter = 0;
     }

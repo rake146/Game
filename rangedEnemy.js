@@ -28,7 +28,10 @@ function RangedEnemy(x, y, r) {
 
     this.pos.add(newvel);
   }
+  this.attack = function(){
 
+    enemyBullets[enemyBullets.length] = new EnemyBullet(this.pos.x, this.pos.y, this.r/6, mouseX-width/2, mouseY-height/2);
+  }
   this.show = function() {
     //hp bars
 

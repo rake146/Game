@@ -14,6 +14,7 @@ var attackCounter = 0;
 var attackSpeed = 20;
 var wave = 0;
 var rangedEnemy = [];
+var enemyBullets = [];
 var timeTilInvasion = 60;
 var millitimer = 60;
 var timerInitiated = false;
@@ -144,6 +145,7 @@ function draw() {
 
     rangedEnemy[i].show();
     rangedEnemy[i].update(splitblobs[0]);
+
     if (rangedEnemy[i].health <= 0)
     {
       rangedEnemy.splice(i,1);
@@ -245,9 +247,9 @@ function draw() {
   //translate to get center pos to center of character
   translate((splitblobs[0].pos.x + splitblobs[0].r/2), (splitblobs[0].pos.y + splitblobs[0].r*0.3));
   //rotate towards mouse
-  var math = atan2(mouseXpos, -(mouseYpos));
+  var mathFirst = atan2(mouseXpos, -(mouseYpos));
 
-  rotate(math);
+  rotate(mathFirst);
   //translate the object back to orig coords
   translate(-(splitblobs[0].pos.x + splitblobs[0].r/2), -(splitblobs[0].pos.y + splitblobs[0].r*0.3));
   //console.log(splitblobs[0].pos.y);
@@ -256,18 +258,26 @@ function draw() {
     splitblobs[i].update();
     splitblobs[i].constrain();
   }
-  for (var i = 0; i < bullets.length; i++) {
-    bullets[i].show();
-    bullets[i].update();
-  }
+  pop();
   if (keyIsDown(32) || mouseIsPressed)
   {
     //console.log(attackCounter);
-    splitblobs[0].attack();
+    splitblobs[0].attack(mathFirst);
     //attackCounter = 0;
+  }
+  for (var j = 0; j < bullets.length; j++) {
+    bullets[j].show();
+    bullets[j].update(mathFirst);
+  }
+  for (var j = 0; j < enemyBullets.length; j++) {
+    enemyBullets[j].show();
+    enemyBullets[j].update(mathFirst);
   }
   fill(0,0,0,0+(colourMultiplier * opacityMultiplier));
   rect(-2000,-2000,4000, 4000);
+  for (var i = 0; i < rangedEnemy.length; i++) {
+    rangedEnemy[i].attack();
+  }
 }
 function keyRelease()
 {

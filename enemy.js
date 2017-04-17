@@ -1,4 +1,5 @@
 var rectWidth = 65;
+
 function Enemy(x, y, r) {
   this.pos = createVector(x,y);
   this.r = r;
@@ -8,7 +9,6 @@ function Enemy(x, y, r) {
   this.attackrate = 0;
 
   this.update = function (player) {
-    var newve = createVector(player.pos.x, player.pos.y);
     var newvel = createVector(player.pos.x - this.pos.x, player.pos.y - this.pos.y);
     newvel.setMag(1);
     //this.vel.lerp(newvel, 1);
@@ -22,6 +22,7 @@ function Enemy(x, y, r) {
       {
         this.attackrate = 0;
         player.health--;
+
       }
 
       newvel = createVector(0,0);

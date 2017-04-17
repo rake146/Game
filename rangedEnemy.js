@@ -39,6 +39,7 @@ function RangedEnemy(x, y, r) {
     textSize(16);
     rect(this.pos.x - this.r/8, this.pos.y, this.r/4, this.r);
     ellipse(this.pos.x, this.pos.y, this.r, this.r);
+
     textAlign(CENTER);
     text(round(this.r), this.pos.x, this.pos.y);
     stroke(0);

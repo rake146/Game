@@ -19,6 +19,7 @@ function Bullet(x, y, r, mouseXpos, mouseYpos) {
       if (dist(enemy[i].pos.x, enemy[i].pos.y, this.pos.x, this.pos.y) < enemy[i].r/2)
       {
         enemy[i].r -= 5;
+        //enemy[i].vel = createVector((splitblobs[0].pos.x - this.pos.x), (splitblobs[0].pos.y - this.pos.y));
         bullets.splice(this, 1);
       }
       if (enemy[i].r <= 48)

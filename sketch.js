@@ -17,8 +17,6 @@ var rangedEnemy = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  splitblobs[0] = new Blob(0, 0, 64);
-  newWave();
 
   for (var i = 0; i < 5; i++){
       var x = random(-1000, 1000);
@@ -31,6 +29,15 @@ function setup() {
       var y = random(-1000, 1000);
       rocks[i] = new Rock(x, y, 128);
   }
+  for (var i = 0; i < 5; i++){
+    do{
+      var x = random(-900, 900);
+      var y = random(-900, 900);
+      splitblobs[0] = new Blob(x, y, 64);
+    }
+    while(dist(x + 32, y + 64*0.3, trees[i].pos.x, trees[i].pos.y) < trees[i].r*2 && dist(x + 32, y + 64*0.3, rocks[i].pos.x, rocks[i].pos.y) < rocks[i].r);
+  }
+  newWave();
 
   for (var i = 0; i < 5; i++)
   {
@@ -74,6 +81,10 @@ function draw() {
       enemy.splice(i,1);
     }
   }
+  for (var i = 0; i < bullets.length; i++) {
+    bullets[i].show();
+    bullets[i].update();
+  }
   push();
   for (var i = 0; i < rangedEnemy.length; i++) {
     var centerOfRangedX = rangedEnemy[i].pos.x + rangedEnemy[i].r/2;
@@ -107,11 +118,6 @@ function draw() {
 
   spawnEnemies();
 
-  for (var i = 0; i < bullets.length; i++) {
-    bullets[i].show();
-    bullets[i].update();
-  }
-
   for (var i = 0; i < walls.length; i++) {
     walls[i].show();
     walls[i].update();
@@ -127,12 +133,7 @@ function draw() {
     attackCounter++;
   }
 
-  if (keyIsDown(32) || mouseIsPressed)
-  {
-    //console.log(attackCounter);
-    splitblobs[0].attack();
-    //attackCounter = 0;
-  }
+
   var valX = 0;
   var valY = 0;
   var speed = 3;
@@ -177,6 +178,16 @@ function draw() {
   }
   strokeWeight(1);
   fill(0, 0, 0);
+
+  textSize(24);
+  textStyle(BOLD);
+  textFont("Ubuntu");
+  fill(0, 0, 0);
+  strokeWeight(0);
+  textAlign(LEFT);
+  text("Wave " + wave, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 30);
+  strokeWeight(1);
+  fill(0, 0, 0);
   push();
   //translate to get center pos to center of character
   translate((splitblobs[0].pos.x + splitblobs[0].r/2), (splitblobs[0].pos.y + splitblobs[0].r*0.3));
@@ -192,14 +203,15 @@ function draw() {
     splitblobs[i].update();
     splitblobs[i].constrain();
   }
+
+  if (keyIsDown(32) || mouseIsPressed)
+  {
+    //console.log(attackCounter);
+    splitblobs[0].attack();
+    //attackCounter = 0;
+  }
   pop();
-  textSize(24);
-  textStyle(BOLD);
-  textFont("Ubuntu");
-  fill(0, 0, 0);
-  strokeWeight(0);
-  textAlign(LEFT);
-  text("Wave " + wave, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 30);
+
 
 }
 function keyRelease()

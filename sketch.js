@@ -17,7 +17,6 @@ var rangedEnemy = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
   splitblobs[0] = new Blob(0, 0, 64);
   newWave();
 
@@ -64,33 +63,9 @@ function draw() {
   for (var i = -1000; i < 1000; i+=40) {
     line(i, -1000, i, 1000);
   }
-  textSize(24);
-  textStyle(BOLD);
-  textFont("Ubuntu");
-  fill(0, 0, 0);
-  strokeWeight(0);
-  textAlign(LEFT);
-  text("Wave " + wave, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 30);
 
   //text("Wave " + wave, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 30);
-  strokeWeight(1);
-  fill(0, 0, 0);
-  push();
-  //translate to get center pos to center of character
-  translate((splitblobs[0].pos.x + splitblobs[0].r/2), (splitblobs[0].pos.y + splitblobs[0].r*0.3));
-  //rotate towards mouse
-  var math = atan2(mouseXpos, -(mouseYpos));
 
-  rotate(math);
-  //translate the object back to orig coords
-  translate(-(splitblobs[0].pos.x + splitblobs[0].r/2), -(splitblobs[0].pos.y + splitblobs[0].r*0.3));
-  //console.log(splitblobs[0].pos.y);
-  for (var i = 0; i < splitblobs.length; i++) {
-    splitblobs[i].show();
-    splitblobs[i].update();
-    splitblobs[i].constrain();
-  }
-  pop();
   for (var i = 0; i < enemy.length; i++) {
     enemy[i].show();
     enemy[i].update(splitblobs[0]);
@@ -200,6 +175,31 @@ function draw() {
     bounce.setMag(1);
     splitblobs[0].vel = bounce;
   }
+  strokeWeight(1);
+  fill(0, 0, 0);
+  push();
+  //translate to get center pos to center of character
+  translate((splitblobs[0].pos.x + splitblobs[0].r/2), (splitblobs[0].pos.y + splitblobs[0].r*0.3));
+  //rotate towards mouse
+  var math = atan2(mouseXpos, -(mouseYpos));
+
+  rotate(math);
+  //translate the object back to orig coords
+  translate(-(splitblobs[0].pos.x + splitblobs[0].r/2), -(splitblobs[0].pos.y + splitblobs[0].r*0.3));
+  //console.log(splitblobs[0].pos.y);
+  for (var i = 0; i < splitblobs.length; i++) {
+    splitblobs[i].show();
+    splitblobs[i].update();
+    splitblobs[i].constrain();
+  }
+  pop();
+  textSize(24);
+  textStyle(BOLD);
+  textFont("Ubuntu");
+  fill(0, 0, 0);
+  strokeWeight(0);
+  textAlign(LEFT);
+  text("Wave " + wave, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 30);
 
 }
 function keyRelease()

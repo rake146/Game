@@ -8,7 +8,6 @@ function RangedEnemy(x, y, r) {
   this.attackrate = 0;
 
   this.update = function (player) {
-    var newve = createVector(player.pos.x, player.pos.y);
     var newvel = createVector(player.pos.x + random(30) - this.pos.x, player.pos.y + random(30) - this.pos.y);
     newvel.setMag(1);
     //this.vel.lerp(newvel, 1);

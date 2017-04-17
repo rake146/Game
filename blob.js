@@ -32,7 +32,7 @@ function Blob(x, y, r) {
     {
 
       //translate the object back to orig coords
-      bullets[bullets.length] = new Bullet(this.pos.x + this.r/2, this.pos.y + this.r*0.3, this.r/6, mouseX-width/2, mouseY-height/2);
+      bullets[bullets.length] = new Bullet(this.pos.x + this.r/2, this.pos.y + this.r*0.3 - 100, this.r/6, mouseX-width/2, mouseY-height/2);
       attackspeed = (random(4,20));
       attackCounter = 0;
     }

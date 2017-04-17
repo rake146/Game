@@ -125,10 +125,6 @@ function draw() {
       enemy.splice(i,1);
     }
   }
-  for (var i = 0; i < bullets.length; i++) {
-    bullets[i].show();
-    bullets[i].update();
-  }
   push();
   for (var i = 0; i < rangedEnemy.length; i++) {
     var centerOfRangedX = rangedEnemy[i].pos.x + rangedEnemy[i].r/2;
@@ -138,8 +134,8 @@ function draw() {
     //translate to get center pos to center of character
 
     translate(centerOfRangedX, centerOfRangedY);
-    //rotate towards mouse
-    var math = atan2(centerOfPlayerX -width/2, -(centerOfPlayerY -height/2));
+
+    var math = atan2(centerOfRangedX - centerOfPlayerX, - centerOfRangedY + centerOfPlayerY);
 
     rotate(math);
     //translate the object back to orig coords
@@ -260,7 +256,10 @@ function draw() {
     splitblobs[i].update();
     splitblobs[i].constrain();
   }
-
+  for (var i = 0; i < bullets.length; i++) {
+    bullets[i].show();
+    bullets[i].update();
+  }
   if (keyIsDown(32) || mouseIsPressed)
   {
     //console.log(attackCounter);

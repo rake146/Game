@@ -12,6 +12,7 @@ var sizeMultiplier = 1;
 var walls = [];
 var attackCounter = 0;
 var attackSpeed = 20;
+var wave = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -62,9 +63,14 @@ function draw() {
   for (var i = -1000; i < 1000; i+=40) {
     line(i, -1000, i, 1000);
   }
-
+  textSize(24);
+  textStyle(BOLD);
+  textFont("Ubuntu");
   fill(0, 0, 0);
-  text("word", splitblobs[0].pos.x - windowWidth/2 + 30, splitblobs[0].pos.y - windowHeight/2 + 30);
+  strokeWeight(0);
+  textAlign(LEFT);
+  text("Wave " + wave, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 30);
+  strokeWeight(1);
   fill(0, 0, 0);
   push();
   //translate to get center pos to center of character
@@ -195,4 +201,5 @@ function newWave(){
       var y = random(-1000, 1000);
       enemy[i] = new Enemy(random(-1000, 1000), random(-1000, 1000), random(64*sizeMultiplier, 128*sizeMultiplier));
   }
+  wave++;
 }

@@ -26,8 +26,12 @@ function Blob(x, y, r) {
   }
   this.attack = function(){
     //this.playAnimation();
+    var mouseXpos = mouseX-width/2;
+    var mouseYpos = mouseY-height/2;
     if (attackCounter >= attackSpeed)
     {
+  
+      //translate the object back to orig coords
       bullets[bullets.length] = new Bullet(this.pos.x - this.r/5, this.pos.y - this.r*0.5, this.r/6, mouseX-width/2, mouseY-height/2);
       attackCounter = 0;
     }

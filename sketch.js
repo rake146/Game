@@ -94,6 +94,7 @@ function draw() {
   }
 
   spawnEnemies();
+
   for (var i = 0; i < bullets.length; i++) {
     bullets[i].show();
     bullets[i].update();
@@ -163,7 +164,7 @@ function draw() {
     splitblobs[0].vel = bounce;
   }
 
-
+  text("word", splitblobs[0].pos.x - windowWidth/2 + 30, splitblobs[0].pos.y - windowHeight/2 + 30);
 }
 function keyRelease()
 {

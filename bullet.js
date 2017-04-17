@@ -26,7 +26,7 @@ function Bullet(x, y, r, mouseXpos, mouseYpos) {
         enemy.splice(i,1);
       }
     }
-    if (this.pos.x < -1000 || this.pos.x > 2000 || this.pos.y < -1000 || this.pos.y > 2000)
+    if (this.pos.x < -1000 || this.pos.x > 1000 || this.pos.y < -1000 || this.pos.y > 1000)
     {
       bullets.splice(this, 1);
     }

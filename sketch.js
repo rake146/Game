@@ -13,6 +13,7 @@ var walls = [];
 var attackCounter = 0;
 var attackSpeed = 20;
 var wave = 0;
+var rangedEnemy = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -70,6 +71,8 @@ function draw() {
   strokeWeight(0);
   textAlign(LEFT);
   text("Wave " + wave, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 30);
+
+  //text("Wave " + wave, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 30);
   strokeWeight(1);
   fill(0, 0, 0);
   push();
@@ -96,7 +99,31 @@ function draw() {
       enemy.splice(i,1);
     }
   }
+  push();
+  for (var i = 0; i < rangedEnemy.length; i++) {
+    var centerOfRangedX = rangedEnemy[i].pos.x + rangedEnemy[i].r/2;
+    var centerOfRangedY = rangedEnemy[i].pos.y + rangedEnemy[i].r/2;
+    var centerOfPlayerX = splitblobs[0].pos.x + splitblobs[0].r/2;
+    var centerOfPlayerY = splitblobs[0].pos.y + splitblobs[0].r*0.3;
+    //translate to get center pos to center of character
 
+    translate(centerOfRangedX, centerOfRangedY);
+    //rotate towards mouse
+    var math = atan2(centerOfPlayerX -width/2, -(centerOfPlayerY -height/2));
+
+    rotate(math);
+    //translate the object back to orig coords
+    translate(-centerOfRangedX, -centerOfRangedY);
+    //console.log(splitblobs[0].pos.y);
+
+    rangedEnemy[i].show();
+    rangedEnemy[i].update(splitblobs[0]);
+    if (rangedEnemy[i].health <= 0)
+    {
+      rangedEnemy.splice(i,1);
+    }
+  }
+  pop();
   for (var i = 0; i < trees.length; i++) {
     trees[i].show();
     rocks[i].show();
@@ -200,6 +227,7 @@ function newWave(){
       var x = random(-1000, 1000);
       var y = random(-1000, 1000);
       enemy[i] = new Enemy(random(-1000, 1000), random(-1000, 1000), random(64*sizeMultiplier, 128*sizeMultiplier));
+      rangedEnemy[i] = new RangedEnemy(random(-1000, 1000), random(-1000, 1000), 48);
   }
   wave++;
 }

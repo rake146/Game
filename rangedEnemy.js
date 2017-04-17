@@ -1,5 +1,5 @@
 var rectWidth = 65;
-function Enemy(x, y, r) {
+function RangedEnemy(x, y, r) {
   this.pos = createVector(x,y);
   this.r = r;
   this.vel = createVector(0,0);
@@ -9,10 +9,10 @@ function Enemy(x, y, r) {
 
   this.update = function (player) {
     var newve = createVector(player.pos.x, player.pos.y);
-    var newvel = createVector(player.pos.x - this.pos.x, player.pos.y - this.pos.y);
+    var newvel = createVector(player.pos.x + random(30) - this.pos.x, player.pos.y + random(30) - this.pos.y);
     newvel.setMag(1);
     //this.vel.lerp(newvel, 1);
-    if (dist(this.pos.x, this.pos.y, player.pos.x, player.pos.y) < this.r/2)
+    if (dist(this.pos.x, this.pos.y, player.pos.x, player.pos.y) < 40)
     {
       if (this.attackrate < 30)
       {
@@ -37,6 +37,7 @@ function Enemy(x, y, r) {
     stroke(87, 96, 53);
     strokeWeight(3);
     textSize(16);
+    rect(this.pos.x - this.r/8, this.pos.y, this.r/4, this.r);
     ellipse(this.pos.x, this.pos.y, this.r, this.r);
     textAlign(CENTER);
     text(round(this.r), this.pos.x, this.pos.y);

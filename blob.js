@@ -30,9 +30,9 @@ function Blob(x, y, r) {
     var mouseYpos = mouseY-height/2;
     if (attackCounter >= attackSpeed)
     {
-  
+
       //translate the object back to orig coords
-      bullets[bullets.length] = new Bullet(this.pos.x - this.r/5, this.pos.y - this.r*0.5, this.r/6, mouseX-width/2, mouseY-height/2);
+      bullets[bullets.length] = new Bullet(this.pos.x + this.r/2, this.pos.y + this.r*0.3, this.r/6, mouseX-width/2, mouseY-height/2);
       attackCounter = 0;
     }
   }
@@ -50,11 +50,14 @@ function Blob(x, y, r) {
     fill(211, 155, 232);
     strokeWeight(3);
     stroke(85, 67, 91);
-
+    rect(this.pos.x + this.r/2 - this.r/8, this.pos.y + this.r*0.3 - this.r, this.r/4, this.r);
+    fill(211, 155, 232);
+    strokeWeight(3);
+    stroke(85, 67, 91);
     rect(this.pos.x, this.pos.y, this.r, this.r*0.6, 10);
     fill(145, 53, 14);
     strokeWeight(1);
-    rect(this.pos.x - this.r/4, this.pos.y - this.r*0.5, this.r/8, this.r);
+
     //rect(this.pos.x - this.r/2, this.pos.y - this.r*0.4, this.r*0.6, this.r/6);
 
     strokeWeight(3);

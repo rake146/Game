@@ -59,7 +59,7 @@ function draw() {
 
 
   if (timeTilInvasion < 15)
-    opacityMultiplier = 6;
+    opacityMultiplier = 4;
   else {
     opacityMultiplier = 0;
   }

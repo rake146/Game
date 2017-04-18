@@ -5,21 +5,23 @@ function RangedEnemy(x, y, r) {
   this.vel = createVector(0,0);
   this.health = 20;
   this.maxhp = 20;
-  this.attackrate = 0;
-
+  this.attackrate = 30;
+  this.attackCounter = 0;
   this.update = function (player) {
+    if(this.attackCounter < this.attackrate)
+      this.attackCounter++;
     var newvel = createVector(player.pos.x + random(30) - this.pos.x, player.pos.y + random(30) - this.pos.y);
     newvel.setMag(1);
     //this.vel.lerp(newvel, 1);
-    if (dist(this.pos.x, this.pos.y, player.pos.x, player.pos.y) < 40)
+    if (dist(this.pos.x, this.pos.y, player.pos.x, player.pos.y) < 100)
     {
-      if (this.attackrate < 30)
+      if (this.attackCounter < this.attackSpeed)
       {
-        this.attackrate++;
+        this.attackCounter++;
       }
-      if (this.attackrate == 30 && player.health > 0)
+      if (this.attackCounter == 30 && player.health > 0)
       {
-        this.attackrate = 0;
+        this.attackCounter = 0;
         player.health--;
       }
 
@@ -29,12 +31,16 @@ function RangedEnemy(x, y, r) {
     this.pos.add(newvel);
   }
   this.attack = function(){
-
-    enemyBullets[enemyBullets.length] = new EnemyBullet(this.pos.x, this.pos.y, this.r/6, mouseX-width/2, mouseY-height/2);
+    if (this.attackCounter >= this.attackrate)
+    {
+      //translate the object back to orig coords
+      enemyBullets[enemyBullets.length] = new EnemyBullet(this.pos.x, this.pos.y, this.r/6, mouseX-width/2, mouseY-height/2);
+      //bullets[bullets.length] = new Bullet(playerX + this.r*cos(angle - PI/2), playerY + this.r*sin(angle - PI/2), this.r/6, mouseX-width/2, mouseY-height/2);
+      //console.log(angle);
+      this.attackCounter = 0;
+    }
   }
   this.show = function() {
-    //hp bars
-
     fill(155-(colourMultiplier*colourMultiplierSecond), 184-(colourMultiplier*colourMultiplierSecond), 74-(colourMultiplier*colourMultiplierSecond));
     stroke(87-(colourMultiplier*colourMultiplierSecond), 96-(colourMultiplier*colourMultiplierSecond), 53-(colourMultiplier*colourMultiplierSecond));
     strokeWeight(3);

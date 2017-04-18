@@ -4,11 +4,11 @@ function EnemyBullet(x, y, r, mouseXpos, mouseYpos) {
   this.r = r;
   this.vel = createVector(0,0);
 
+  var newvel = createVector((splitblobs[0].pos.x + splitblobs[0].r/2 - this.pos.x + this.r/2), (splitblobs[0].pos.y + splitblobs[0].r*0.3 - this.pos.y + this.r/2));
   this.update = function () {
     //if (playerposy > 0)
     var extrapX = (2000/mouseX-width/2);
     var extrapY = (2000/mouseY-height/2);
-    var newvel = createVector((splitblobs[0].pos.x - this.pos.x), (splitblobs[0].pos.y - this.pos.y));
 
     newvel.setMag(random(6,12));
     //this.vel.lerp(newvel, 1);
@@ -19,7 +19,7 @@ function EnemyBullet(x, y, r, mouseXpos, mouseYpos) {
       if (dist(splitblobs[0].pos.x, splitblobs[0].pos.y, this.pos.x, this.pos.y) < splitblobs[0].r/2)
       {
         if (splitblobs[0].health > 0)
-          splitblobs[0].health -= 5;
+          splitblobs[0].health --;
         //enemy[i].vel = createVector((splitblobs[0].pos.x - this.pos.x), (splitblobs[0].pos.y - this.pos.y));
         enemyBullets.splice(this, 1);
       }

@@ -2,10 +2,10 @@
 CanvasGame
 To do:
 
-- Collisions with trees and stones.
+- ~~Collisions with trees and stones.~~
 
-- Fire the bullets from the blowpipe.
+- ~~Fire the bullets from the blowpipe.~~
 
-- Add 'Night Mode'.
+- ~~Add 'Night Mode'.~~
 
 - Add a secondary enemy.

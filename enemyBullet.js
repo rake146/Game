@@ -4,7 +4,7 @@ function EnemyBullet(x, y, r, mouseXpos, mouseYpos) {
   this.r = r;
   this.vel = createVector(0,0);
 
-  var newvel = createVector((splitblobs[0].pos.x + splitblobs[0].r/2 - this.pos.x + this.r/2), (splitblobs[0].pos.y + splitblobs[0].r*0.3 - this.pos.y + this.r/2));
+  var newvel = createVector((splitblobs[0].pos.x - this.pos.x + this.r/2), (splitblobs[0].pos.y - this.pos.y + this.r/2));
   this.update = function () {
     //if (playerposy > 0)
     var extrapX = (2000/mouseX-width/2);
@@ -16,7 +16,7 @@ function EnemyBullet(x, y, r, mouseXpos, mouseYpos) {
     //console.log(playerposy);
 
     for (var i = 0; i < splitblobs.length; i++) {
-      if (dist(splitblobs[0].pos.x, splitblobs[0].pos.y, this.pos.x, this.pos.y) < splitblobs[0].r/2)
+      if (dist(splitblobs[0].pos.x + splitblobs[0].r/2, splitblobs[0].pos.y + splitblobs[0].r*0.3, this.pos.x, this.pos.y) < splitblobs[0].r)
       {
         if (splitblobs[0].health > 0)
           splitblobs[0].health --;
@@ -26,7 +26,7 @@ function EnemyBullet(x, y, r, mouseXpos, mouseYpos) {
     }
     if (this.pos.x < -1000 || this.pos.x > 1000 || this.pos.y < -1000 || this.pos.y > 1000)
     {
-      bullets.splice(this, 1);
+      enemyBullets.splice(this, 1);
     }
   }
   this.show = function() {

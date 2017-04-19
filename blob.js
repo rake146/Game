@@ -7,8 +7,17 @@ function Blob(x, y, r) {
   this.vel = createVector(0,0);
   this.health = 100;
   this.maxhp = 100;
-
+  this.currentXP = 0;
+  this.maxXP = 100;
+  this.level = 0;
   this.update = function () {
+    if (this.currentXP >= this.maxXP)
+    {
+      this.maxXP * 1.2;
+      this.currentXP = 0;
+      this.level++;
+      remainingSkillPoints++;
+    }
     this.vel.lerp(this.vel.y, 0, 0.1);
 
     this.pos.add(this.vel);
@@ -16,7 +25,10 @@ function Blob(x, y, r) {
     {
       this.vel = createVector(0,0);
     }
-
+    if (this.health == 0)
+    {
+        gameover = true;
+    }
     fill(0);
   }
 
@@ -28,8 +40,8 @@ function Blob(x, y, r) {
     //this.playAnimation();
     var mouseXpos = mouseX-width/2;
     var mouseYpos = mouseY-height/2;
-    var playerX = this.pos.x + this.r/2;
-    var playerY = this.pos.y + this.r*0.3;
+    var playerX = this.pos.x;
+    var playerY = this.pos.y;
     if (attackCounter >= attackSpeed)
     {
       //translate the object back to orig coords
@@ -46,19 +58,20 @@ function Blob(x, y, r) {
     noStroke();
     // Get fraction 0->1 and multiply it by width of bar
     var drawWidth = (splitblobs[0].health / splitblobs[0].maxhp) * rectWidth;
-    rect(splitblobs[0].pos.x, splitblobs[0].pos.y + 55, drawWidth, 5, 5);
+    rect(splitblobs[0].pos.x - this.r/2, splitblobs[0].pos.y + 55 - this.r*0.3, drawWidth, 5, 5);
     // Outline
     stroke(0);
     noFill();
-    rect(splitblobs[0].pos.x, splitblobs[0].pos.y + 55, rectWidth, 5, 5);
+    rect(splitblobs[0].pos.x - this.r/2, splitblobs[0].pos.y + 55 - this.r*0.3, rectWidth, 5, 5);
+
     fill(211-(colourMultiplier*colourMultiplierSecond), 155, 232);
     strokeWeight(3);
     stroke(85-(colourMultiplier*colourMultiplierSecond), 67, 91);
-    rect(this.pos.x + this.r/2 - this.r/8, this.pos.y + this.r*0.3 - this.r, this.r/4, this.r);
+    rect(this.pos.x + this.r/2 - this.r/8 - this.r/2, this.pos.y + this.r*0.3 - this.r, this.r/4, this.r);
     fill(211-(colourMultiplier*colourMultiplierSecond), 155, 232);
     strokeWeight(3);
     stroke(85-(colourMultiplier*colourMultiplierSecond), 67, 91);
-    rect(this.pos.x, this.pos.y, this.r, this.r*0.6, 10);
+    rect(this.pos.x - this.r/2, this.pos.y-this.r*0.3, this.r, this.r*0.6, 10);
     fill(145-(colourMultiplier*colourMultiplierSecond), 53, 14);
     strokeWeight(1);
 
@@ -66,16 +79,16 @@ function Blob(x, y, r) {
 
     strokeWeight(3);
     fill(211-(colourMultiplier*colourMultiplierSecond), 155-(colourMultiplier*colourMultiplierSecond), 232-(colourMultiplier*colourMultiplierSecond));
-    ellipse(this.pos.x - this.r/6, this.pos.y + this.r/4, this.r/4, this.r/4);
-    ellipse(this.pos.x + this.r/6 + this.r, this.pos.y + this.r/4, this.r/4, this.r/4);
+    ellipse(this.pos.x - this.r/6 - this.r/2, this.pos.y + this.r/4 -this.r*0.3, this.r/4, this.r/4);
+    ellipse(this.pos.x + this.r/6 + this.r - this.r/2, this.pos.y + this.r/4 -this.r*0.3, this.r/4, this.r/4);
     fill(0);
     stroke(0);
-    ellipse(this.pos.x - this.r/4 + this.r, this.pos.y + this.r/4, this.r/4, this.r/4);
-    ellipse(this.pos.x - this.r *0.75 + this.r, this.pos.y + this.r/4, this.r/4, this.r/4);
+    ellipse(this.pos.x - this.r/4 + this.r - this.r/2, this.pos.y + this.r/4 -this.r*0.3, this.r/4, this.r/4);
+    ellipse(this.pos.x - this.r *0.75 + this.r - this.r/2, this.pos.y + this.r/4 -this.r*0.3, this.r/4, this.r/4);
     strokeWeight(0);
     fill(255,255,255);
-    ellipse(this.pos.x - this.r *0.75 + this.r, this.pos.y + this.r/5, this.r/5, this.r/5);
-    ellipse(this.pos.x - this.r/4 + this.r, this.pos.y + this.r/5, this.r/5, this.r/5);
+    ellipse(this.pos.x - this.r *0.75 + this.r - this.r/2, this.pos.y + this.r/5 -this.r*0.3, this.r/5, this.r/5);
+    ellipse(this.pos.x - this.r/4 + this.r - this.r/2, this.pos.y + this.r/5 -this.r*0.3, this.r/5, this.r/5);
     //ellipse(this.pos.x + this.r/3, this.pos.y + this.r/3, this.r/3, this.r/3);
     //ellipse(this.pos.x - this.r/3, this.pos.y - this.r/3, this.r/3, this.r/3);
     stroke(0);

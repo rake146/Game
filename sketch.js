@@ -1,6 +1,7 @@
 var blob;
 var blobs = [];
 var zoom = 1;
+var gameover = false;
 var surroundblobs = [];
 var splitblobs = [];
 var enemy = [];
@@ -12,6 +13,11 @@ var sizeMultiplier = 1;
 var walls = [];
 var attackCounter = 0;
 var attackSpeed = 20;
+var skillpointsHP = 0;
+var skillpointsDmg = 0;
+var skillpointsAtSp = 0;
+var skillpointsRegen = 0;
+var remainingSkillPoints = 0;
 var wave = 0;
 var rangedEnemy = [];
 var enemyBullets = [];
@@ -243,15 +249,19 @@ function draw() {
   text("Timer " + timeTilInvasion, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 60);
   strokeWeight(1);
   fill(0, 0, 0);
+
+
+  drawSkillPoints();
+  drawXPBar();
   push();
   //translate to get center pos to center of character
-  translate((splitblobs[0].pos.x + splitblobs[0].r/2), (splitblobs[0].pos.y + splitblobs[0].r*0.3));
+  translate((splitblobs[0].pos.x), (splitblobs[0].pos.y));
   //rotate towards mouse
   var mathFirst = atan2(mouseXpos, -(mouseYpos));
 
   rotate(mathFirst);
   //translate the object back to orig coords
-  translate(-(splitblobs[0].pos.x + splitblobs[0].r/2), -(splitblobs[0].pos.y + splitblobs[0].r*0.3));
+  translate(-(splitblobs[0].pos.x), -(splitblobs[0].pos.y));
   //console.log(splitblobs[0].pos.y);
   for (var i = 0; i < splitblobs.length; i++) {
     splitblobs[i].show();
@@ -278,6 +288,7 @@ function draw() {
   for (var i = 0; i < rangedEnemy.length; i++) {
     rangedEnemy[i].attack();
   }
+
 }
 function keyRelease()
 {
@@ -289,6 +300,40 @@ function keyPressed() {
   {
     walls[walls.length] = new Wall(splitblobs[0].pos.x, splitblobs[0].pos.y, 32);
   }
+  if (keyCode == 49)
+  {
+    if (skillpointsAtSp < 6 && remainingSkillPoints > 0)
+    {
+      skillpointsAtSp++;
+      remainingSkillPoints--;
+    }
+
+  }
+  if (keyCode == 50)
+  {
+    if (skillpointsDmg < 6 && remainingSkillPoints > 0)
+    {
+      skillpointsDmg++;
+      remainingSkillPoints--;
+    }
+  }
+  if (keyCode == 52)
+  {
+    if (skillpointsHP < 6 && remainingSkillPoints > 0)
+    {
+      skillpointsHP++;
+      remainingSkillPoints--;
+    }
+  }
+  if (keyCode == 51)
+  {
+    if (skillpointsRegen < 6 && remainingSkillPoints > 0)
+    {
+      skillpointsRegen++;
+      remainingSkillPoints--;
+    }
+  }
+
 
 }
 function windowResized() {
@@ -304,7 +349,163 @@ function newWave(){
       var x = random(-1000, 1000);
       var y = random(-1000, 1000);
       enemy[i] = new Enemy(random(-1000, 1000), random(-1000, 1000), random(64*sizeMultiplier, 128*sizeMultiplier));
-      rangedEnemy[i] = new RangedEnemy(random(-1000, 1000), random(-1000, 1000), 48);
+      rangedEnemy[i] = new RangedEnemy(random(-1000, 1000), random(-1000, 1000), 64);
   }
   wave++;
+}
+function drawSkillPoints(){
+  fill(51);
+  stroke(53,53,77);
+  strokeWeight(2);
+  textSize(12);
+
+  rect(splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y + windowHeight/2 - 60, 150, 15, 15);
+  fill(255);
+  textAlign(CENTER);
+  text("Max Health", splitblobs[0].pos.x - windowWidth/2 + 10+75, splitblobs[0].pos.y + windowHeight/2 - 49);
+  text("[4]", splitblobs[0].pos.x - windowWidth/2 + 10+75+85, splitblobs[0].pos.y + windowHeight/2 - 49);
+  for (var i = 0; i < skillpointsHP; i++) {
+    fill(103,104,81);
+    if (i == 0)
+    {
+        rect(splitblobs[0].pos.x - windowWidth/2 + 12 + i*10+10*i, splitblobs[0].pos.y + windowHeight/2 - 59, 20, 13, 15, 0, 0, 15);
+    }
+    else if(i == 5)
+    {
+      rect(splitblobs[0].pos.x - windowWidth/2 + 12 + i*10+10*i, splitblobs[0].pos.y + windowHeight/2 - 59, 20, 13);
+    }
+    else {
+        rect(splitblobs[0].pos.x - windowWidth/2 + 12 + i*10+10*i, splitblobs[0].pos.y + windowHeight/2 - 59, 20, 13)
+    }
+
+  }
+  fill(153, 216, 17);
+  rect(splitblobs[0].pos.x - windowWidth/2 + 12 + 120, splitblobs[0].pos.y + windowHeight/2 - 59, 25, 13, 0, 15, 15, 0);
+  fill(51);
+  rect(splitblobs[0].pos.x - windowWidth/2 + 142, splitblobs[0].pos.y + windowHeight/2 - 53, 7, 1);
+  rect(splitblobs[0].pos.x - windowWidth/2 + 145, splitblobs[0].pos.y + windowHeight/2 - 56, 1, 7);
+  //text("Timer " + timeTilInvasion, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 60);
+
+  fill(51);
+  stroke(53,53,77);
+  strokeWeight(2);
+  textSize(12);
+
+  rect(splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y + windowHeight/2 - 80, 150, 15, 15);
+  fill(255);
+  textAlign(CENTER);
+  text("Health Regen", splitblobs[0].pos.x - windowWidth/2 + 10+75, splitblobs[0].pos.y + windowHeight/2 - 69);
+  text("[3]", splitblobs[0].pos.x - windowWidth/2 + 10+75+85, splitblobs[0].pos.y + windowHeight/2 - 69);
+  for (var i = 0; i < skillpointsRegen; i++) {
+    fill(103,104,81);
+    if (i == 0)
+    {
+        rect(splitblobs[0].pos.x - windowWidth/2 + 12 + i*10+10*i, splitblobs[0].pos.y + windowHeight/2 - 79, 20, 13, 15, 0, 0, 15);
+    }
+    else if(i == 5)
+    {
+      rect(splitblobs[0].pos.x - windowWidth/2 + 12 + i*10+10*i, splitblobs[0].pos.y + windowHeight/2 - 79, 20, 13);
+    }
+    else {
+        rect(splitblobs[0].pos.x - windowWidth/2 + 12 + i*10+10*i, splitblobs[0].pos.y + windowHeight/2 - 79, 20, 13)
+    }
+
+  }
+  fill(57, 123, 229);
+  rect(splitblobs[0].pos.x - windowWidth/2 + 12 + 120, splitblobs[0].pos.y + windowHeight/2 - 79, 25, 13, 0, 15, 15, 0);
+  fill(51);
+  rect(splitblobs[0].pos.x - windowWidth/2 + 142, splitblobs[0].pos.y + windowHeight/2 - 73, 7, 1);
+  rect(splitblobs[0].pos.x - windowWidth/2 + 145, splitblobs[0].pos.y + windowHeight/2 - 76, 1, 7);
+
+
+
+  fill(51);
+  stroke(53,53,77);
+  strokeWeight(2);
+  textSize(12);
+
+  rect(splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y + windowHeight/2 - 100, 150, 15, 15);
+  fill(255);
+  textAlign(CENTER);
+  text("Attack Damage", splitblobs[0].pos.x - windowWidth/2 + 10+75, splitblobs[0].pos.y + windowHeight/2 - 89);
+  text("[2]", splitblobs[0].pos.x - windowWidth/2 + 10+75+85, splitblobs[0].pos.y + windowHeight/2 - 89);
+  for (var i = 0; i < skillpointsDmg; i++) {
+    fill(103,104,81);
+    if (i == 0)
+    {
+        rect(splitblobs[0].pos.x - windowWidth/2 + 12 + i*10+10*i, splitblobs[0].pos.y + windowHeight/2 - 99, 20, 13, 15, 0, 0, 15);
+    }
+    else if(i == 5)
+    {
+      rect(splitblobs[0].pos.x - windowWidth/2 + 12 + i*10+10*i, splitblobs[0].pos.y + windowHeight/2 - 99, 20, 13);
+    }
+    else {
+        rect(splitblobs[0].pos.x - windowWidth/2 + 12 + i*10+10*i, splitblobs[0].pos.y + windowHeight/2 - 99, 20, 13)
+    }
+
+  }
+  fill(237, 33, 94);
+  rect(splitblobs[0].pos.x - windowWidth/2 + 12 + 120, splitblobs[0].pos.y + windowHeight/2 - 99, 25, 13, 0, 15, 15, 0);
+  fill(51);
+  rect(splitblobs[0].pos.x - windowWidth/2 + 142, splitblobs[0].pos.y + windowHeight/2 - 93, 7, 1);
+  rect(splitblobs[0].pos.x - windowWidth/2 + 145, splitblobs[0].pos.y + windowHeight/2 - 96, 1, 7);
+
+
+  rect(splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y + windowHeight/2 - 120, 150, 15, 15);
+  fill(255);
+  textAlign(CENTER);
+  text("Attack Speed", splitblobs[0].pos.x - windowWidth/2 + 10+75, splitblobs[0].pos.y + windowHeight/2 - 109);
+  text("[1]", splitblobs[0].pos.x - windowWidth/2 + 10+75+85, splitblobs[0].pos.y + windowHeight/2 - 109);
+  for (var i = 0; i < skillpointsAtSp; i++) {
+    fill(103,104,81);
+    if (i == 0)
+    {
+        rect(splitblobs[0].pos.x - windowWidth/2 + 12 + i*10+10*i, splitblobs[0].pos.y + windowHeight/2 - 119, 20, 13, 15, 0, 0, 15);
+    }
+    else if(i == 5)
+    {
+      rect(splitblobs[0].pos.x - windowWidth/2 + 12 + i*10+10*i, splitblobs[0].pos.y + windowHeight/2 - 119, 20, 13);
+    }
+    else {
+        rect(splitblobs[0].pos.x - windowWidth/2 + 12 + i*10+10*i, splitblobs[0].pos.y + windowHeight/2 - 119, 20, 13)
+    }
+
+  }
+  fill(234, 172, 150);
+  rect(splitblobs[0].pos.x - windowWidth/2 + 12 + 120, splitblobs[0].pos.y + windowHeight/2 - 119, 25, 13, 0, 15, 15, 0);
+  fill(51);
+  rect(splitblobs[0].pos.x - windowWidth/2 + 142, splitblobs[0].pos.y + windowHeight/2 - 113, 7, 1);
+  rect(splitblobs[0].pos.x - windowWidth/2 + 145, splitblobs[0].pos.y + windowHeight/2 - 116, 1, 7);
+
+  fill(255);
+  textSize(18);
+  text("x" + remainingSkillPoints, splitblobs[0].pos.x - windowWidth/2 + 10+75+60, splitblobs[0].pos.y + windowHeight/2 - 130);
+}
+function mousePressed(){
+  var x = mouseX - width/2;
+  var y = mouseY - height/2;
+
+  if (dist(x, y, splitblobs[0].pos.x - windowWidth/2 + 142, splitblobs[0].pos.y + windowHeight/2 - 53) < 100)
+    skillpoints++;
+}
+function drawXPBar(){
+  stroke(53,53,77);
+  fill(51);
+  rect(splitblobs[0].pos.x - 150, splitblobs[0].pos.y + windowHeight/2 - 60, 300, 20, 15);
+
+  //fill(34,103,214);
+  textAlign(CENTER);
+  textSize(16);
+  fill(255);
+  text("Level " + splitblobs[0].level, splitblobs[0].pos.x, splitblobs[0].pos.y + windowHeight/2 - 45);
+  fill(34,103,214);
+  noStroke();
+  // Get fraction 0->1 and multiply it by width of bar
+  var drawW = (splitblobs[0].currentXP / splitblobs[0].maxXP) * 300;
+  rect(splitblobs[0].pos.x - 150, splitblobs[0].pos.y + windowHeight/2 - 60, drawW, 20, 15, 0, 0, 15);
+  // Outline
+
+
+  fill(255,255,255, 40)
+  //rect(splitblobs[0].pos.x - 150, splitblobs[0].pos.y + windowHeight/2 - 60, 300, 15, 15);
 }

@@ -16,21 +16,36 @@ function Bullet(x, y, r, mouseXpos, mouseYpos) {
     //console.log(playerposy);
 
     for (var i = 0; i < enemy.length; i++) {
-      if (dist(enemy[i].pos.x, enemy[i].pos.y, this.pos.x, this.pos.y) < enemy[i].r/2)
-      {
-        enemy[i].r -= 5;
-        //enemy[i].vel = createVector((splitblobs[0].pos.x - this.pos.x), (splitblobs[0].pos.y - this.pos.y));
-        enemy.splice(this, 1);
-      }
       if (enemy[i].r <= 48)
       {
         enemy.splice(i,1);
+      }
+      else if (dist(enemy[i].pos.x, enemy[i].pos.y, this.pos.x, this.pos.y) < enemy[i].r/2)
+      {
+        enemy[i].r -= 5;
+        splitblobs[0].currentXP += 5;
+        //enemy[i].vel = createVector((splitblobs[0].pos.x - this.pos.x), (splitblobs[0].pos.y - this.pos.y));
+        bullets.splice(this, 1);
+      }
+    }
+    for (var i = 0; i < rangedEnemy.length; i++) {
+      if (rangedEnemy[i].r <= 48)
+      {
+        rangedEnemy.splice(i,1);
+      }
+      else if (dist(rangedEnemy[i].pos.x, rangedEnemy[i].pos.y, this.pos.x, this.pos.y) < rangedEnemy[i].r/2)
+      {
+        rangedEnemy[i].r -= 5;
+        splitblobs[0].currentXP += 5;
+        //enemy[i].vel = createVector((splitblobs[0].pos.x - this.pos.x), (splitblobs[0].pos.y - this.pos.y));
+        bullets.splice(this, 1);
       }
     }
     if (this.pos.x < -1000 || this.pos.x > 1000 || this.pos.y < -1000 || this.pos.y > 1000)
     {
       bullets.splice(this, 1);
     }
+
   }
   this.show = function() {
 

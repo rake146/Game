@@ -18,7 +18,7 @@ var skillpointsHP = 0;
 var skillpointsDmg = 0;
 var skillpointsAtSp = 0;
 var skillpointsRegen = 0;
-var remainingSkillPoints = 0;
+var remainingSkillPoints = 10;
 var wave = 0;
 var rangedEnemy = [];
 var enemyBullets = [];
@@ -291,18 +291,14 @@ function draw() {
     for (var i = 0; i < rangedEnemy.length; i++) {
       rangedEnemy[i].attack();
     }
-
   }
+  }
+
   function keyRelease()
   {
     splitblobs[0].vel = createVector(0,0);
   }
   function keyPressed() {
-
-    if (keyCode == ENTER)
-    {
-      walls[walls.length] = new Wall(splitblobs[0].pos.x, splitblobs[0].pos.y, 32);
-    }
     if (keyCode == 49)
     {
       if (skillpointsAtSp < 6 && remainingSkillPoints > 0)
@@ -336,8 +332,6 @@ function draw() {
         remainingSkillPoints--;
       }
     }
-
-
   }
   function windowResized() {
   	resizeCanvas(windowWidth, windowHeight);
@@ -484,8 +478,9 @@ function draw() {
     textSize(18);
     text("x" + remainingSkillPoints, splitblobs[0].pos.x - windowWidth/2 + 10+75+60, splitblobs[0].pos.y + windowHeight/2 - 130);
     splitblobs[0].name = document.getElementById('nameInput').value;
+
   }
-}
+
 function mousePressed(){
   var x = mouseX - width/2;
   var y = mouseY - height/2;

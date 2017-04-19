@@ -10,6 +10,12 @@ function Blob(x, y, r) {
   this.currentXP = 0;
   this.maxXP = 100;
   this.level = 0;
+
+
+  this.name = "";
+
+
+  console.log(this.name);
   this.update = function () {
     if (this.currentXP >= this.maxXP)
     {
@@ -93,6 +99,6 @@ function Blob(x, y, r) {
     //ellipse(this.pos.x - this.r/3, this.pos.y - this.r/3, this.r/3, this.r/3);
     stroke(0);
     strokeWeight(0);
-
+    text(this.name, splitblobs[0].pos.x, splitblobs[0].pos.y + 30);
   }
 }

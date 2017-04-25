@@ -29,6 +29,7 @@ var colourMultiplier = 30-timeTilInvasion;
 var colourMultiplierSecond = 0;
 var opacityMultiplier = 0;
 var backgroundOverlay;
+var drawnGrid = false;
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
@@ -53,14 +54,6 @@ function setup() {
     while(dist(x + 32, y + 64*0.3, trees[i].pos.x, trees[i].pos.y) < trees[i].r*2 && dist(x + 32, y + 64*0.3, rocks[i].pos.x, rocks[i].pos.y) < rocks[i].r);
   }
 
-  //newWave();
-
-  for (var i = 0; i < 5; i++)
-  {
-    var x = 0 + 128*(sin(54 * i));
-    var y = 0 + 128*(cos(54 * i));
-    surroundblobs[i] = new AllyBlob(x, y, 32);
-  }
 }
 
 function draw() {
@@ -81,7 +74,7 @@ function draw() {
       millitimer = 60;
     }
 
-    background(108-(colourMultiplier*colourMultiplierSecond), 130-(colourMultiplier*colourMultiplierSecond), 85-(colourMultiplier*colourMultiplierSecond));
+    background(108, 130, 85);
     strokeWeight(0);
     var mouseXpos = mouseX-width/2;
     var mouseYpos = mouseY-height/2;
@@ -91,90 +84,15 @@ function draw() {
     scale(zoom);
     translate(-splitblobs[0].pos.x, -splitblobs[0].pos.y);
 
-    push();
-    fill(118-(colourMultiplier*colourMultiplierSecond), 143-(colourMultiplier*colourMultiplierSecond), 90-(colourMultiplier*colourMultiplierSecond));
-    strokeWeight(2);
-    stroke(102,123,81);
-    for (var i = -2000; i < 2000; i+=40) {
-      //stroke(112-(colourMultiplier*colourMultiplierSecond), 135-(colourMultiplier*colourMultiplierSecond), 86-(colourMultiplier*colourMultiplierSecond));
-      line(-2000, i, 2000, i);
-    }
-    for (var i = -2000; i < 2000; i+=40) {
-      line(i, -2000, i, 2000);
-    }
-
-    rect(-1000, -1000, 2000, 2000);
-    pop();
-    strokeWeight(2);
-    stroke(112,135,86);
-    for (var i = -1000; i < 1000; i+=40) {
-      if (i < -1000 || i > 1000)
-        stroke(0,0,0);
-      else {
-          stroke(112,135,86);
-      }
-      //stroke(112-(colourMultiplier*colourMultiplierSecond), 135-(colourMultiplier*colourMultiplierSecond), 86-(colourMultiplier*colourMultiplierSecond));
-      line(-1000, i, 1000, i);
-    }
-    for (var i = -1000; i < 1000; i+=40) {
-      if (i < -1000 || i > 1000)
-        stroke(0,0,0);
-      else {
-        stroke(112,135,86);
-      }
-      line(i, -1000, i, 1000);
-    }
-
-    //text("Wave " + wave, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 30);
-
-    for (var i = 0; i < enemy.length; i++) {
-      enemy[i].show();
-      enemy[i].update(splitblobs[0]);
-      if (enemy[i].health <= 0)
-      {
-        enemy.splice(i,1);
-      }
-    }
-    push();
-    for (var i = 0; i < rangedEnemy.length; i++) {
-      var centerOfRangedX = rangedEnemy[i].pos.x + rangedEnemy[i].r/2;
-      var centerOfRangedY = rangedEnemy[i].pos.y + rangedEnemy[i].r/2;
-      var centerOfPlayerX = splitblobs[0].pos.x + splitblobs[0].r/2;
-      var centerOfPlayerY = splitblobs[0].pos.y + splitblobs[0].r*0.3;
-      //translate to get center pos to center of character
-
-      translate(centerOfRangedX, centerOfRangedY);
-
-      var math = atan2(centerOfRangedX - centerOfPlayerX, - centerOfRangedY + centerOfPlayerY);
-
-      rotate(math);
-      //translate the object back to orig coords
-      translate(-centerOfRangedX, -centerOfRangedY);
-      //console.log(splitblobs[0].pos.y);
-
-      rangedEnemy[i].show();
-      rangedEnemy[i].update(splitblobs[0]);
-
-      if (rangedEnemy[i].health <= 0)
-      {
-        rangedEnemy.splice(i,1);
-      }
-    }
-    pop();
-    for (var i = 0; i < trees.length; i++) {
-      rocks[i].show();
-      trees[i].show();
-    }
-
+    //if (drawnGrid == false)
+    drawGrid();
+    drawEnemies();
+    showAndRotateRanged();
+    showTreesAndRocks();
     spawnEnemies();
 
-    for (var i = 0; i < walls.length; i++) {
-      walls[i].show();
-      walls[i].update();
-    }
     if (enemy.length == 0)
     {
-
       if (timerInitiated == false)
       {
         timeTilInvasion = 30;
@@ -195,12 +113,9 @@ function draw() {
     {
       attackCounter++;
     }
-
-
     var valX = 0;
     var valY = 0;
     var speed = 3;
-
     if (keyIsDown(87))
     {
       valY -= 1;
@@ -217,7 +132,6 @@ function draw() {
     {
       valX += 1;
     }
-
     var ableToMove = true;
     var centerOfCharX = splitblobs[0].pos.x + splitblobs[0].r/2;
     var centerOfCharY = splitblobs[0].pos.y + splitblobs[0].r*0.3;
@@ -229,7 +143,6 @@ function draw() {
       if (dist(centerOfCharX + valX * speed, centerOfCharY + valY * speed, rocks[i].pos.x + rocks[i].r/2, rocks[i].pos.y + rocks[i].r/2) < rocks[i].r/2)
         ableToMove = false;
     }
-
     if (ableToMove)
     {
       splitblobs[0].vel = createVector( valX * speed , valY * speed);
@@ -241,7 +154,6 @@ function draw() {
     }
     strokeWeight(1);
     fill(0, 0, 0);
-
     textSize(24);
     textStyle(BOLD);
     textFont("Ubuntu");
@@ -252,8 +164,6 @@ function draw() {
     text("Timer " + timeTilInvasion, splitblobs[0].pos.x - windowWidth/2 + 10, splitblobs[0].pos.y - windowHeight/2 + 60);
     strokeWeight(1);
     fill(0, 0, 0);
-
-
     drawSkillPoints();
     drawXPBar();
     push();
@@ -520,4 +430,69 @@ function enterGame(){
   var elem4 = document.getElementById('modal');
   elem4.style.display = "none";
   console.log(gameEntered);
+}
+function drawGrid(){
+  //stops redrawing the grid
+  drawnGrid = true;
+  //draws the sqaures on the map
+  fill(118, 143, 90);
+  strokeWeight(2);
+  stroke(102,123,81);
+  for (var i = -2000; i < 2000; i+=40) {
+    line(-2000, i, 2000, i);
+  }
+  for (var i = -2000; i < 2000; i+=40) {
+    line(i, -2000, i, 2000);
+  }
+
+  rect(-1000, -1000, 2000, 2000);
+
+  strokeWeight(2);
+  stroke(112,135,86);
+  for (var i = -1000; i < 1000; i+=40) {
+    if (i < -1000 || i > 1000)
+      stroke(0,0,0);
+    line(-1000, i, 1000, i);
+  }
+  for (var i = -1000; i < 1000; i+=40) {
+    if (i < -1000 || i > 1000)
+      stroke(0,0,0);
+    line(i, -1000, i, 1000);
+  }
+}
+function drawEnemies(){
+  for (var i = 0; i < enemy.length; i++) {
+    enemy[i].show();
+    enemy[i].update(splitblobs[0]);
+    if (enemy[i].health <= 0)
+    {
+      enemy.splice(i,1);
+    }
+  }
+}
+function showAndRotateRanged(){
+  push();
+  for (var i = 0; i < rangedEnemy.length; i++) {
+    var centerOfRangedX = rangedEnemy[i].pos.x + rangedEnemy[i].r/2;
+    var centerOfRangedY = rangedEnemy[i].pos.y + rangedEnemy[i].r/2;
+    var centerOfPlayerX = splitblobs[0].pos.x + splitblobs[0].r/2;
+    var centerOfPlayerY = splitblobs[0].pos.y + splitblobs[0].r*0.3;
+    translate(centerOfRangedX, centerOfRangedY);
+    var math = atan2(centerOfRangedX - centerOfPlayerX, - centerOfRangedY + centerOfPlayerY);
+    rotate(math);
+    translate(-centerOfRangedX, -centerOfRangedY);
+    rangedEnemy[i].show();
+    rangedEnemy[i].update(splitblobs[0]);
+    if (rangedEnemy[i].health <= 0)
+    {
+      rangedEnemy.splice(i,1);
+    }
+  }
+  pop();
+}
+function showTreesAndRocks(){
+  for (var i = 0; i < trees.length; i++) {
+    rocks[i].show();
+    trees[i].show();
+  }
 }

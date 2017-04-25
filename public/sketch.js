@@ -30,8 +30,12 @@ var colourMultiplierSecond = 0;
 var opacityMultiplier = 0;
 var backgroundOverlay;
 var drawnGrid = false;
+var socket;
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  // Start a socket connection to the server
+  // Some day we would run this server somewhere else
+  socket = io.connect('http://localhost:3000');
 
   var colourMultiplier = 30-timeTilInvasion;
   for (var i = 0; i < 5; i++){
@@ -45,15 +49,23 @@ function setup() {
       var y = random(-1000, 1000);
       rocks[i] = new Rock(x, y, 128);
   }
-  for (var i = 0; i < 5; i++){
-    do{
-      var x = random(-900, 900);
-      var y = random(-900, 900);
-      splitblobs[0] = new Blob(x, y, 64);
-    }
-    while(dist(x + 32, y + 64*0.3, trees[i].pos.x, trees[i].pos.y) < trees[i].r*2 && dist(x + 32, y + 64*0.3, rocks[i].pos.x, rocks[i].pos.y) < rocks[i].r);
-  }
 
+  splitblobs[splitblobs.length] = new Blob(random(-1000, 1000), random(-1000, 1000), 64);
+
+  var data = {
+  x: splitblobs[splitblobs.length-1].pos.x,
+  y: splitblobs[splitblobs.length-1].pos.y,
+  r: splitblobs[splitblobs.length-1].r
+  };
+  socket.emit('start', data);
+
+  socket.on('heartbeat',
+    function(data) {
+      //console.log(data);
+      blobs = data;
+      //console.log(data);
+    }
+  );
 }
 
 function draw() {
@@ -176,12 +188,19 @@ function draw() {
     //translate the object back to orig coords
     translate(-(splitblobs[0].pos.x), -(splitblobs[0].pos.y));
     //console.log(splitblobs[0].pos.y);
-    for (var i = 0; i < splitblobs.length; i++) {
+    for (var i = splitblobs.length - 1; i >= 0; i--) {
       splitblobs[i].show();
       splitblobs[i].update();
       splitblobs[i].constrain();
     }
     pop();
+    for (var i = blobs.length - 1; i >= 0; i--) {
+      var id = blobs[i].id;
+      if (id.substring(2, id.length) !== socket.id) {
+        ellipse(blobs[i].x, blobs[i].y, blobs[i].r*2, blobs[i].r*2);
+      }
+
+    }
     if (keyIsDown(32) || mouseIsPressed)
     {
       //console.log(attackCounter);
@@ -202,6 +221,12 @@ function draw() {
       rangedEnemy[i].attack();
     }
   }
+  var data = {
+    x: splitblobs[splitblobs.length-1].pos.x,
+    y: splitblobs[splitblobs.length-1].pos.y,
+    r: splitblobs[splitblobs.length-1].r
+  };
+  socket.emit('update', data);
   }
 
   function keyRelease()

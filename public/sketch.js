@@ -34,28 +34,18 @@ var socket;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   // Start a socket connection to the server
-  // Some day we would run this server somewhere else
+  // Some day we would run rocks[i] server somewhere else
   socket = io.connect('http://localhost:3000');
 
   var colourMultiplier = 30-timeTilInvasion;
-  for (var i = 0; i < 5; i++){
-      var x = random(-1000, 1000);
-      var y = random(-1000, 1000);
-      trees[i] = new Tree(x, y, 128);
-  }
-
-  for (var i = 0; i < 5; i++){
-      var x = random(-1000, 1000);
-      var y = random(-1000, 1000);
-      rocks[i] = new Rock(x, y, 128);
-  }
 
   splitblobs[splitblobs.length] = new Blob(random(-1000, 1000), random(-1000, 1000), 64);
 
   var data = {
   x: splitblobs[splitblobs.length-1].pos.x,
   y: splitblobs[splitblobs.length-1].pos.y,
-  r: splitblobs[splitblobs.length-1].r
+  r: splitblobs[splitblobs.length-1].r,
+  rotation: splitblobs[splitblobs.length-1].rotation
   };
   socket.emit('start', data);
 
@@ -66,6 +56,30 @@ function setup() {
       //console.log(data);
     }
   );
+  socket.on('timer',
+    function(data) {
+      //console.log(data);
+      timeTilInvasion = data;
+      //console.log(data);
+    }
+  );
+  socket.on('rocks',
+    function(data) {
+      //console.log(data);
+      rocks = data;
+      //console.log(data);
+    }
+  );
+
+  socket.on('trees',
+    function(data) {
+      //console.log(data);
+      trees = data;
+      //console.log(data);
+    }
+  );
+
+
 }
 
 function draw() {
@@ -78,13 +92,7 @@ function draw() {
       opacityMultiplier = 0;
     }
     colourMultiplier = 30-timeTilInvasion;
-    if (millitimer > 0)
-      millitimer--;
-    else {
-      if (timeTilInvasion > 0)
-        timeTilInvasion--;
-      millitimer = 60;
-    }
+
 
     background(108, 130, 85);
     strokeWeight(0);
@@ -101,26 +109,9 @@ function draw() {
     drawEnemies();
     showAndRotateRanged();
     showTreesAndRocks();
-    spawnEnemies();
+    //spawnEnemies();
 
-    if (enemy.length == 0)
-    {
-      if (timerInitiated == false)
-      {
-        timeTilInvasion = 30;
-        timerInitiated = true;
-      }
-      if (timeTilInvasion == 0)
-      {
-        waveMultiplier += 0.1;
-        sizeMultiplier += 0.1;
-        timerInitiated = false;
-        newWave();
-      }
-      for (var i = 0; i < rangedEnemy.length; i++) {
-        rangedEnemy.splice(i, 1);
-      }
-    }
+
     if (attackCounter < attackSpeed)
     {
       attackCounter++;
@@ -148,11 +139,11 @@ function draw() {
     var centerOfCharX = splitblobs[0].pos.x + splitblobs[0].r/2;
     var centerOfCharY = splitblobs[0].pos.y + splitblobs[0].r*0.3;
     for (var i = 0; i < trees.length; i++) {
-      if (dist(centerOfCharX + valX * speed, centerOfCharY + valY * speed, trees[i].pos.x, trees[i].pos.y) < trees[i].r)
+      if (dist(centerOfCharX + valX * speed, centerOfCharY + valY * speed, trees[i].x, trees[i].y) < trees[i].r)
         ableToMove = false;
     }
     for (var i = 0; i < rocks.length; i++) {
-      if (dist(centerOfCharX + valX * speed, centerOfCharY + valY * speed, rocks[i].pos.x + rocks[i].r/2, rocks[i].pos.y + rocks[i].r/2) < rocks[i].r/2)
+      if (dist(centerOfCharX + valX * speed, centerOfCharY + valY * speed, rocks[i].x + rocks[i].r/2, rocks[i].y + rocks[i].r/2) < rocks[i].r/2)
         ableToMove = false;
     }
     if (ableToMove)
@@ -185,6 +176,7 @@ function draw() {
     var mathFirst = atan2(mouseXpos, -(mouseYpos));
 
     rotate(mathFirst);
+    splitblobs[splitblobs.length - 1].rotation = mathFirst;
     //translate the object back to orig coords
     translate(-(splitblobs[0].pos.x), -(splitblobs[0].pos.y));
     //console.log(splitblobs[0].pos.y);
@@ -196,10 +188,38 @@ function draw() {
     pop();
     for (var i = blobs.length - 1; i >= 0; i--) {
       var id = blobs[i].id;
-      if (id.substring(2, id.length) !== socket.id) {
-        ellipse(blobs[i].x, blobs[i].y, blobs[i].r*2, blobs[i].r*2);
-      }
+      if (id !== socket.id) {
+        push();
+        translate((blobs[i].x), (blobs[i].y));
+        rotate(blobs[i].rotation);
+        translate((-blobs[i].x), (-blobs[i].y));
+        fill(211-(colourMultiplier*colourMultiplierSecond), 155, 232);
+        strokeWeight(3);
+        stroke(85-(colourMultiplier*colourMultiplierSecond), 67, 91);
+        rect(blobs[i].x + blobs[i].r/2 - blobs[i].r/8 - blobs[i].r/2, blobs[i].y + blobs[i].r*0.3 - blobs[i].r, blobs[i].r/4, blobs[i].r);
+        fill(211-(colourMultiplier*colourMultiplierSecond), 155, 232);
+        strokeWeight(3);
+        stroke(85-(colourMultiplier*colourMultiplierSecond), 67, 91);
+        rect(blobs[i].x - blobs[i].r/2, blobs[i].y-blobs[i].r*0.3, blobs[i].r, blobs[i].r*0.6, 10);
+        fill(145-(colourMultiplier*colourMultiplierSecond), 53, 14);
+        strokeWeight(1);
 
+        strokeWeight(3);
+        fill(211-(colourMultiplier*colourMultiplierSecond), 155-(colourMultiplier*colourMultiplierSecond), 232-(colourMultiplier*colourMultiplierSecond));
+        ellipse(blobs[i].x - blobs[i].r/6 - blobs[i].r/2, blobs[i].y + blobs[i].r/4 -blobs[i].r*0.3, blobs[i].r/4, blobs[i].r/4);
+        ellipse(blobs[i].x + blobs[i].r/6 + blobs[i].r - blobs[i].r/2, blobs[i].y + blobs[i].r/4 -blobs[i].r*0.3, blobs[i].r/4, blobs[i].r/4);
+        fill(0);
+        stroke(0);
+        ellipse(blobs[i].x - blobs[i].r/4 + blobs[i].r - blobs[i].r/2, blobs[i].y + blobs[i].r/4 -blobs[i].r*0.3, blobs[i].r/4, blobs[i].r/4);
+        ellipse(blobs[i].x - blobs[i].r *0.75 + blobs[i].r - blobs[i].r/2, blobs[i].y + blobs[i].r/4 -blobs[i].r*0.3, blobs[i].r/4, blobs[i].r/4);
+        strokeWeight(0);
+        fill(255,255,255);
+        ellipse(blobs[i].x - blobs[i].r *0.75 + blobs[i].r - blobs[i].r/2, blobs[i].y + blobs[i].r/5 -blobs[i].r*0.3, blobs[i].r/5, blobs[i].r/5);
+        ellipse(blobs[i].x - blobs[i].r/4 + blobs[i].r - blobs[i].r/2, blobs[i].y + blobs[i].r/5 -blobs[i].r*0.3, blobs[i].r/5, blobs[i].r/5);
+        stroke(0);
+        strokeWeight(0);
+        pop();
+      }
     }
     if (keyIsDown(32) || mouseIsPressed)
     {
@@ -224,7 +244,8 @@ function draw() {
   var data = {
     x: splitblobs[splitblobs.length-1].pos.x,
     y: splitblobs[splitblobs.length-1].pos.y,
-    r: splitblobs[splitblobs.length-1].r
+    r: splitblobs[splitblobs.length-1].r,
+    rotation: splitblobs[splitblobs.length-1].rotation
   };
   socket.emit('update', data);
   }
@@ -516,8 +537,34 @@ function showAndRotateRanged(){
   pop();
 }
 function showTreesAndRocks(){
+  for (var i = 0; i < rocks.length; i++) {
+    //rocks[i].show();
+    stroke(0);
+    fill(0,0,0);
+    stroke(53, 53, 72);
+    strokeWeight(3);
+    fill(96, 96, 120);
+    rect(rocks[i].x, rocks[i].y, rocks[i].r, rocks[i].r, 20);
+    strokeWeight(0);
+    fill(121, 121, 146);
+    rect(rocks[i].x + rocks[i].r*0.15, rocks[i].y + rocks[i].r*0.15, rocks[i].r*0.75, rocks[i].r*0.75, 20);
+  }
   for (var i = 0; i < trees.length; i++) {
-    rocks[i].show();
-    trees[i].show();
+    fill(103-(colourMultiplier*colourMultiplierSecond), 104-(colourMultiplier*colourMultiplierSecond), 81-(colourMultiplier*colourMultiplierSecond));
+    stroke(53-(colourMultiplier*colourMultiplierSecond), 53-(colourMultiplier*colourMultiplierSecond), 77-(colourMultiplier*colourMultiplierSecond));
+    strokeWeight(3);
+    beginShape();
+    for (j = 0; j < 5; j++) {
+      vertex(trees[i].x + trees[i].r * cos(2 * PI * j / 5), trees[i].y + trees[i].r * sin(2 * PI * j / 5));
+    }
+    endShape(CLOSE);
+
+    fill(117-(colourMultiplier*colourMultiplierSecond), 143-(colourMultiplier*colourMultiplierSecond), 88-(colourMultiplier*colourMultiplierSecond));
+    strokeWeight(0);
+    beginShape();
+    for (j = 0; j < 5; j++) {
+      vertex(trees[i].x + trees[i].r * 0.75 * cos(2 * PI * j / 5), trees[i].y + trees[i].r * 0.75 * sin(2 * PI * j / 5));
+    }
+    endShape(CLOSE);
   }
 }

@@ -10,7 +10,7 @@ function Blob(x, y, r) {
   this.currentXP = 0;
   this.maxXP = 100;
   this.level = 0;
-
+  this.rotation = 0;
 
   this.name = "";
 

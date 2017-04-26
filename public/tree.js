@@ -2,22 +2,7 @@
 function Tree(x, y, r) {
   this.pos = createVector(x,y);
   this.r = r;
-  this.vel = createVector(0,0);
 
-  this.update = function () {
-
-  }
-
-  this.constrain = function(){
-
-  }
-
-  this.eats = function(other){
-
-  }
-  this.split = function(length) {
-
-  }
   this.show = function() {
 
     fill(103-(colourMultiplier*colourMultiplierSecond), 104-(colourMultiplier*colourMultiplierSecond), 81-(colourMultiplier*colourMultiplierSecond));
